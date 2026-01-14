@@ -2,7 +2,7 @@ from extract_title import extract_title
 from markdown_to_html_node import markdown_to_html_node
 
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
     # Read the markdown file at from_path and store the contents in a variable.
@@ -19,6 +19,9 @@ def generate_page(from_path, template_path, dest_path):
 
     template_content = template_content.replace("{{ Title }}", title)
     template_content = template_content.replace("{{ Content }}", html)
+
+    template_content = template_content.replace('href="/', f'href="{basepath}')
+    template_content = template_content.replace('src="/', f'src="{basepath}')
 
     # Write the new full HTML page to a file at dest_path.
     # Be sure to create any necessary directories if they don't exist.

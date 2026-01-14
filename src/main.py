@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 
 from src.generate_pages_recursive import generate_pages_recursive
 
@@ -18,18 +19,22 @@ def copy_files_recursive(source_dir_path, dest_dir_path):
             copy_files_recursive(from_path, to_path)
 
 def main():
+    basepath = "/"
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+
     dir_path_static = "./static"
-    dir_path_public = "./public"
+    dir_path_docs = "./docs"
 
-    print("Deleting public directory...")
-    if os.path.exists(dir_path_public):
-        shutil.rmtree(dir_path_public)
+    print("Deleting docs directory...")
+    if os.path.exists(dir_path_docs):
+        shutil.rmtree(dir_path_docs)
 
-    print("Copying static files to public directory...")
-    copy_files_recursive(dir_path_static, dir_path_public)
+    print("Copying static files to docs directory...")
+    copy_files_recursive(dir_path_static, dir_path_docs)
 
     print("Generating HTML pages...")
-    generate_pages_recursive("content", "template.html", "public")
+    generate_pages_recursive("content", "template.html", "docs", basepath)
 
 if __name__ == "__main__":
     main()
